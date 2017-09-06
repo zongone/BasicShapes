@@ -20,5 +20,12 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
+
+		ofVec2f lastFramePosition;
+		int numTriangles = 1;
+		int minOffset = 5;
+		int maxOffset = 70;
+		int alpha = 150;
+		double distance = 0;
+		bool firstFrameAfterClick = true;
 };

@@ -12,7 +12,6 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
 }
 
 //--------------------------------------------------------------
@@ -22,15 +21,35 @@ void ofApp::draw(){
 
 			// Code for the final version of the brush
 
-			int numTriangles = 10;
-			int minOffset = 5;
-			int maxOffset = 70;
-			int alpha = 150;
+			ofVec2f mousePos(ofGetMouseX(), ofGetMouseY());
+			if (firstFrameAfterClick)
+			{
+				firstFrameAfterClick = false;
+			}
+			else {
+				if (ofGetFrameNum() % 60)
+				{
+					distance = sqrt(pow((lastFramePosition - mousePos).x, 2) + pow((lastFramePosition - mousePos).y, 2));
+					if (distance < 2.f)
+					{
+						numTriangles = 2;
+					}
+					else if (distance < 5.f) {
+						numTriangles = 1;
+					}
+					else if (distance < 10.f) {
+						numTriangles = 15;
+					}
+					else
+					{
+						numTriangles = 100;
+					}
+					ofDrawBitmapString(ofToString(distance), 10, 10);
+				}
+			}
 
 			for (int t = 0; t<numTriangles; ++t) {
-				float offsetDistance = ofRandom(minOffset, maxOffset);
-
-				ofVec2f mousePos(ofGetMouseX(), ofGetMouseY());
+				float offsetDistance = ofRandom(minOffset, maxOffset);				
 
 				// Define a triangle at the origin (0,0) that points to the right
 				ofVec2f p1(0, 6.25);
@@ -52,9 +71,15 @@ void ofApp::draw(){
 				ofColor aqua(0, 252, 255, alpha);
 				ofColor purple(198, 0, 205, alpha);
 				ofColor inbetween = aqua.getLerped(purple, ofRandom(1.0));
-				ofSetColor(inbetween);
+				ofSetColor(inbetween); 				
 
 				ofDrawTriangle(p1, p2, p3);
+
+				ofSetColor(ofColor::red);
+				
+				std::cout << distance << "\n";
+				lastFramePosition = mousePos;
+
 			}
 
 			// Alternate code, for the rotating triangle brush discussed in the chapter:
@@ -79,6 +104,11 @@ void ofApp::draw(){
 			//
 			//        ofSetColor(255, 50);
 			//        ofDrawTriangle(p1, p2, p3);
+		}
+		else
+		{
+			distance = 0;
+			lastFramePosition.set(0,0);
 		}
 
 	// If the right mouse button is pressed...
@@ -114,7 +144,7 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+	firstFrameAfterClick = true;
 }
 
 //--------------------------------------------------------------

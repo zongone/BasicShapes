@@ -75,8 +75,8 @@ void ofApp::draw(){
 
 				ofDrawTriangle(p1, p2, p3);
 
-				ofSetColor(ofColor::red);
-				
+				ofSetColor(255,255,255);
+				ofDrawBitmapString(ofToString(ofGetFrameRate()), 10, 10);
 				std::cout << distance << "\n";
 				lastFramePosition = mousePos;
 
